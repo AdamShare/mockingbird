@@ -71,7 +71,7 @@ public struct ValueProvider {
   var enabledIdentifiers = Set<String>()
   
   /// Enables all mocks to handle methods that return `Void`.
-  static let baseValues: [ObjectIdentifier: Any] = [ObjectIdentifier(Void.self): ()]
+    nonisolated(unsafe) static let baseValues: [ObjectIdentifier: Any] = [ObjectIdentifier(Void.self): ()]
   
   init(values: [ObjectIdentifier: Any] = [:], identifiers: Set<String> = []) {
     self.storedValues = values
@@ -244,7 +244,7 @@ public struct ValueProvider {
   // MARK: - Value providing
   
   /// All preset value providers.
-  public static let standardProvider = ValueProvider() +
+  public nonisolated(unsafe) static let standardProvider = ValueProvider() +
     .collectionsProvider +
     .primitivesProvider +
     .basicsProvider +

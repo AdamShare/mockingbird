@@ -1,12 +1,12 @@
 import Foundation
-import PathKit
+@preconcurrency import PathKit
 
-struct ArgumentContext: Codable {
+struct ArgumentContext: Codable, Sendable {
   let workingPath: Path
   let environment: [String: String]
   let arguments: [String]
   
-  static var shared = ArgumentContext()
+    nonisolated(unsafe) static var shared = ArgumentContext()
   
   init(workingPath: Path = Path(FileManager.default.currentDirectoryPath),
        environment: [String: String] = ProcessInfo.processInfo.environment,

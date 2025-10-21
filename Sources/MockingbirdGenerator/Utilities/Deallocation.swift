@@ -1,6 +1,6 @@
 import Foundation
 
-private var objectReferences = [AnyObject]()
+nonisolated(unsafe) private var objectReferences = [AnyObject]()
 private let queue = DispatchQueue(label: "co.bird.mockingbird.retain", qos: .background)
 
 /// Retain an object for the lifetime of the application.

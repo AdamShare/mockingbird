@@ -1,7 +1,7 @@
 import Foundation
 
 /// Matches argument values with a comparator.
-@objc(MKBArgumentMatcher) public class ArgumentMatcher: NSObject {
+@objc(MKBArgumentMatcher) public class ArgumentMatcher: NSObject, @unchecked Sendable {
   /// Necessary for custom comparators such as `any()` that only work on the lhs.
   enum Priority: UInt {
     case low = 0, `default` = 500, high = 1000

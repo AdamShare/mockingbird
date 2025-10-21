@@ -1,5 +1,5 @@
 import Foundation
-import PathKit
+@preconcurrency import PathKit
 
 public class TestTarget: CodableTarget {
   public let mockedTypeNames: [Path: Set<String>]

@@ -1,5 +1,5 @@
 import XCTest
-import PathKit
+@preconcurrency import PathKit
 @testable import MockingbirdGenerator
 
 class PathFnmatchTests: XCTestCase {

@@ -6,7 +6,7 @@ struct InvocationRecord {
 }
 
 /// Records invocations for stubbing and verification.
-@objc(MKBInvocationRecorder) public class InvocationRecorder: NSObject {
+@objc(MKBInvocationRecorder) public class InvocationRecorder: NSObject, @unchecked Sendable {
   
   /// Used to attribute declarations to stubbing and verification calls in tests.
   @objc(MKBInvocationRecorderMode) public enum Mode: UInt {
@@ -17,7 +17,7 @@ struct InvocationRecord {
   
   enum Constants {
     static let recorderKey = DispatchSpecificKey<InvocationRecorder>()
-    static let resultSentinel = NSException(
+      nonisolated(unsafe) static let resultSentinel = NSException(
       name: NSExceptionName(rawValue: "co.bird.mockingbird.InvocationRecorder.result"),
       reason: nil,
       userInfo: nil)

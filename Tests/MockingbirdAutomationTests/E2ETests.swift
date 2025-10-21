@@ -1,6 +1,6 @@
 import MockingbirdAutomation
 import MockingbirdCommon
-import PathKit
+@preconcurrency import PathKit
 import XCTest
 
 class E2ETests: XCTestCase {

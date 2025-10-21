@@ -2,7 +2,7 @@
 
 import Foundation
 import MockingbirdCommon
-import PathKit
+@preconcurrency import PathKit
 import os.log
 
 class FileGenerator {

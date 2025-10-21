@@ -1,7 +1,7 @@
 import Foundation
 
 /// References a line of code in a file.
-public struct SourceLocation {
+public struct SourceLocation: Sendable {
   let file: StaticString
   let line: UInt
   let column: UInt

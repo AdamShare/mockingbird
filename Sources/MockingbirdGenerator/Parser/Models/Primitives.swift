@@ -1,8 +1,8 @@
 import Foundation
 
 /// Static cache for primative `DeclaredType` objects.
-enum Primitives {
-  static let map: [Substring: DeclaredType] = [
+enum Primitives: Sendable {
+    static let map: [Substring: DeclaredType] = [
     "Bool": DeclaredType(from: "Bool", ignoreCache: true),
     "Bool?": DeclaredType(from: "Bool?", ignoreCache: true),
     "[Bool]": DeclaredType(from: "[Bool]", ignoreCache: true),

@@ -1,5 +1,5 @@
 import Foundation
-import PathKit
+@preconcurrency import PathKit
 import os.log
 
 public struct GenerateFileConfig {
@@ -31,7 +31,7 @@ public struct GenerateFileConfig {
   }
 }
 
-public class GenerateFileOperation: BasicOperation {
+public final class GenerateFileOperation: BasicOperation, @unchecked Sendable {
   let processTypesResult: ProcessTypesOperation.Result
   let checkCacheResult: CheckCacheOperation.Result?
   let findMockedTypesResult: FindMockedTypesOperation.Result?
@@ -64,6 +64,6 @@ public class GenerateFileOperation: BasicOperation {
       try config.outputPath.writeUtf8Strings(contents)
     }
     
-    logInfo("Generated file to \(config.outputPath.absolute())")
+    logInfo("Generated file to \(self.config.outputPath.absolute())")
   }
 }

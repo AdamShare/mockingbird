@@ -1,7 +1,7 @@
 import Foundation
 
 /// A simple wrapper for thread-safe data access.
-public class Synchronized<T> {
+public final class Synchronized<T>: @unchecked Sendable {
   private let queue = DispatchQueue(label: "co.bird.mockingbird.synchronized",
                                     attributes: .concurrent)
   private(set) public var unsafeValue: T

@@ -34,7 +34,7 @@ extension MockableType {
 }
 
 /// Renders a `MockableType` to a `PartialFileContent` object.
-class MockableTypeTemplate: Template {
+final class MockableTypeTemplate: Template, @unchecked Sendable {
   let mockableType: MockableType
   let mockedTypeNames: Set<String>?
   
@@ -352,41 +352,41 @@ class MockableTypeTemplate: Template {
   /// unstubbed method invocations to show up in the testing code.
   var shouldGenerateDefaultInitializer: Bool {
     // Opaque types can have designated initializers we don't know about, so it's best to ignore.
-    guard mockableType.opaqueInheritedTypeNames.isEmpty else {
+    guard self.mockableType.opaqueInheritedTypeNames.isEmpty else {
       logWarning(
-        "Unable to synthesize default initializer for \(mockableType.name.singleQuoted) which inherits from an external type not defined in a supporting source file",
+        "Unable to synthesize default initializer for \(self.mockableType.name.singleQuoted) which inherits from an external type not defined in a supporting source file",
         diagnostic: .undefinedType,
-        filePath: mockableType.filePath,
+        filePath: self.mockableType.filePath,
         line: self.mockableType.lineNumber
       )
       return false
     }
-    
+
     let hasDesignatedInitializer =
-      mockableType.methods.contains(where: { $0.isDesignatedInitializer })
-    
-    guard mockableType.kind == .protocol else { // Handle classes.
+      self.mockableType.methods.contains(where: { $0.isDesignatedInitializer })
+
+    guard self.mockableType.kind == .protocol else { // Handle classes.
       if hasDesignatedInitializer {
-        log("Skipping default initializer generation for \(mockableType.name.singleQuoted) because it is a class with a designated initializer")
+        log("Skipping default initializer generation for \(self.mockableType.name.singleQuoted) because it is a class with a designated initializer")
       }
       return !hasDesignatedInitializer
     }
-    
+
     // We can always generate a default initializer for protocols without class conformance.
     guard protocolClassConformance != nil else { return true }
-    
+
     // Ignore protocols conforming to a class with a designated initializer.
     guard !hasDesignatedInitializer else {
-      log("Skipping default initializer generation for \(mockableType.name.singleQuoted) because it is a protocol conforming to a class with a designated initializer")
+      log("Skipping default initializer generation for \(self.mockableType.name.singleQuoted) because it is a protocol conforming to a class with a designated initializer")
       return false
     }
-    
-    let isMockableClassConformance = mockableType.primarySelfConformanceType?.shouldMock ?? true
+
+    let isMockableClassConformance = self.mockableType.primarySelfConformanceType?.shouldMock ?? true
     if !isMockableClassConformance {
       logWarning(
-        "\(mockableType.name.singleQuoted) conforms to a class without public initializers and cannot be initialized",
+        "\(self.mockableType.name.singleQuoted) conforms to a class without public initializers and cannot be initialized",
         diagnostic: .notMockable,
-        filePath: mockableType.filePath,
+        filePath: self.mockableType.filePath,
         line: self.mockableType.lineNumber
       )
     }

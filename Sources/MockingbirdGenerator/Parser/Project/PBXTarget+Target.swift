@@ -1,6 +1,6 @@
 import Foundation
-import PathKit
-import XcodeProj
+@preconcurrency import PathKit
+@preconcurrency import XcodeProj
 
 extension PBXTarget: Target {
   /// Get the build configuration for testing, which is almost always `debug`.
@@ -8,6 +8,7 @@ extension PBXTarget: Target {
   var testingBuildConfiguration: XCBuildConfiguration? {
     guard let inferredBuildConfiguration = buildConfigurationList?.buildConfigurations
       .first(where: { $0.name.lowercased() == "debug" }) else {
+        let name = self.name
         logWarning("No debug build configuration found for target \(name.singleQuoted)")
         return buildConfigurationList?.buildConfigurations.first
     }
@@ -23,12 +24,13 @@ extension PBXTarget: Target {
       )
     else {
       let fallbackModuleName = name.escapingForModuleName()
+        let name = self.name
       logWarning("Unable to resolve product module name for target \(name.singleQuoted), falling back to \(fallbackModuleName.singleQuoted)")
       return fallbackModuleName
     }
     
     let escapedModuleName = moduleName.escapingForModuleName()
-    log("Resolved product module name \(escapedModuleName.singleQuoted) for target \(name.singleQuoted)")
+    log("Resolved product module name \(escapedModuleName.singleQuoted) for target \(self.name.singleQuoted)")
     return escapedModuleName
   }
 

@@ -82,7 +82,7 @@ public struct OrderedVerificationOptions: OptionSet {
   ///   verify(bird.fly()).wasCalled()
   /// }
   /// ```
-  public static let noInvocationsBefore = OrderedVerificationOptions(rawValue: 1 << 0)
+    nonisolated(unsafe) public static let noInvocationsBefore = OrderedVerificationOptions(rawValue: 1 << 0)
   
   /// Check that there are no recorded invocations after those explicitly verified in the block.
   ///
@@ -105,7 +105,7 @@ public struct OrderedVerificationOptions: OptionSet {
   ///   verify(bird.canFly).wasCalled()
   /// }
   /// ```
-  public static let noInvocationsAfter = OrderedVerificationOptions(rawValue: 1 << 1)
+    nonisolated(unsafe) public static let noInvocationsAfter = OrderedVerificationOptions(rawValue: 1 << 1)
   
   /// Check that there are no recorded invocations between those explicitly verified in the block.
   ///
@@ -128,7 +128,7 @@ public struct OrderedVerificationOptions: OptionSet {
   ///   verify(bird.fly()).wasCalled()
   /// }
   /// ```
-  public static let onlyConsecutiveInvocations = OrderedVerificationOptions(rawValue: 1 << 2)
+    nonisolated(unsafe) public static let onlyConsecutiveInvocations = OrderedVerificationOptions(rawValue: 1 << 2)
 }
 
 private func getAllInvocations(in contexts: [UUID: MockingContext],

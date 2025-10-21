@@ -2,7 +2,7 @@ import Foundation
 import XCTest
 
 /// Internal errors thrown due to a failed test assertion or precondition.
-enum TestFailure: Error, CustomStringConvertible {
+enum TestFailure: Error, CustomStringConvertible, Sendable {
   case incorrectInvocationCount(
     invocationCount: Int,
     invocation: Invocation,

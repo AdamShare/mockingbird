@@ -1,7 +1,7 @@
 import Foundation
 
 /// Recursively parses type declarations.
-enum DeclaredType: CustomStringConvertible, CustomDebugStringConvertible, SerializableType {
+enum DeclaredType: CustomStringConvertible, CustomDebugStringConvertible, SerializableType, Sendable {
   case single(Single, optionals: String)
   case tuple(Tuple, optionals: String)
   

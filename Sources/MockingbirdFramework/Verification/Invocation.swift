@@ -1,7 +1,7 @@
 import Foundation
 
 /// Attributes selectors to a specific member type.
-@objc(MKBSelectorType) public enum SelectorType: UInt, CustomStringConvertible {
+@objc(MKBSelectorType) public enum SelectorType: UInt, CustomStringConvertible, Sendable {
   case method
   case getter
   case setter
@@ -20,7 +20,7 @@ import Foundation
 }
 
 /// Mocks create invocations when receiving calls to methods or member methods.
-protocol Invocation: CustomStringConvertible {
+protocol Invocation: CustomStringConvertible, Sendable {
   var selectorName: String { get }
   var selectorType: SelectorType { get }
   var arguments: [ArgumentMatcher] { get }
@@ -124,7 +124,7 @@ struct SwiftInvocation: Invocation {
 }
 
 /// An invocation recieved by an Objective-C.
-@objc(MKBObjCInvocation) public class ObjCInvocation: NSObject, Invocation {
+@objc(MKBObjCInvocation) public class ObjCInvocation: NSObject, Invocation, @unchecked Sendable  {
   let selectorName: String
   let setterSelectorName: String?
   let selectorType: SelectorType

@@ -1,9 +1,9 @@
 import Foundation
-import SourceKittenFramework
-import PathKit
+@preconcurrency import SourceKittenFramework
+@preconcurrency import PathKit
 
 /// Classes, protocols, and extensions on either.
-class MockableType: Hashable, Comparable {
+final class MockableType: Hashable, Comparable, @unchecked Sendable {
   let name: String
   let moduleName: String
   let fullyQualifiedName: String

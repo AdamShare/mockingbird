@@ -1,8 +1,8 @@
 import Foundation
-import SourceKittenFramework
+@preconcurrency import SourceKittenFramework
 
 /// A light wrapper around a SourceKit structure, used for the mocked module and its dependencies.
-class RawType {
+final class RawType: Sendable {
   let dictionary: StructureDictionary
   let name: String
   /// Fully qualified with respect to the current module (not with respect to other modules)

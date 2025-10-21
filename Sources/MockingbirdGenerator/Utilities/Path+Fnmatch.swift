@@ -1,4 +1,4 @@
-import PathKit
+@preconcurrency import PathKit
 import Darwin
 
 extension Path {

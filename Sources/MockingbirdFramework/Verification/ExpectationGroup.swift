@@ -1,14 +1,14 @@
 import Foundation
 
 /// A deferred expectation that can be fulfilled when an invocation arrives later.
-struct CapturedExpectation {
+struct CapturedExpectation: Sendable {
   let mockingContext: MockingContext
   let invocation: Invocation
   let expectation: Expectation
 }
 
 /// Stores all expectations invoked by verification methods within a scoped context.
-class ExpectationGroup {
+class ExpectationGroup: @unchecked Sendable {
   static let contextKey = DispatchSpecificKey<ExpectationGroup>()
   
   private(set) weak var parent: ExpectationGroup?

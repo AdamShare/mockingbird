@@ -1,10 +1,10 @@
 import Foundation
-import PathKit
+@preconcurrency import PathKit
 import SourceKittenFramework
 import SwiftSyntax
 import os.log
 
-public class ParseFilesOperation: BasicOperation {
+public class ParseFilesOperation: BasicOperation, @unchecked Sendable {
   let extractSourcesResult: ExtractSourcesOperationResult
   let checkCacheResult: CheckCacheOperation.Result?
   

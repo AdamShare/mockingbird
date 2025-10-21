@@ -42,7 +42,7 @@ public struct ImplementationProvider<DeclarationType: Declaration, InvocationTyp
     return createImplementation()
   }
   
-  func didAddStub<DeclarationType: Declaration>(
+  func didAddStub(
     _ stub: StubbingContext.Stub,
     context: Context,
     manager: StubbingManager<DeclarationType, InvocationType, ReturnType>

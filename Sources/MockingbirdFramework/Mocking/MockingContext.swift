@@ -1,7 +1,7 @@
 import Foundation
 
 /// Stores invocations received by mocks.
-@objc(MKBMockingContext) public class MockingContext: NSObject {
+@objc(MKBMockingContext) public class MockingContext: NSObject, @unchecked Sendable {
   private(set) var allInvocations = Synchronized<[Invocation]>([])
   private(set) var invocations = Synchronized<[String: [Invocation]]>([:])
   let identifier = UUID()

@@ -1,5 +1,5 @@
 import Foundation
-import SourceKittenFramework
+@preconcurrency import SourceKittenFramework
 
 struct Variable: Hashable, Comparable {
   let name: String

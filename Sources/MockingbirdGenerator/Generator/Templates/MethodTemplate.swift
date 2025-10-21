@@ -3,7 +3,7 @@
 import Foundation
 
 /// Renders a `Method` to a `PartialFileContent` object.
-class MethodTemplate: Template {
+class MethodTemplate: Template, @unchecked Sendable {
   let method: Method
   let context: MockableTypeTemplate
   

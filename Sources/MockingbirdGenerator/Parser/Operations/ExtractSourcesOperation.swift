@@ -1,5 +1,5 @@
 import Foundation
-import PathKit
+@preconcurrency import PathKit
 import XcodeProj
 import os.log
 
@@ -19,20 +19,20 @@ public protocol ExtractSourcesAbstractOperation: BasicOperation {
   var result: ExtractSourcesOperationResult { get }
 }
 
-public struct ExtractSourcesOptions: OptionSet {
+public struct ExtractSourcesOptions: OptionSet, Sendable {
   public let rawValue: Int
   public init(rawValue: Int) {
     self.rawValue = rawValue
   }
-  
+
   public static let dependencyPaths = ExtractSourcesOptions(rawValue: 1 << 1)
   public static let useMockingbirdIgnore = ExtractSourcesOptions(rawValue: 1 << 2)
-  
+
   public static let all: ExtractSourcesOptions = [.dependencyPaths, .useMockingbirdIgnore]
 }
 
 /// Given a target, find all related source files including those compiled by dependencies.
-public class ExtractSourcesOperation<T: Target>: BasicOperation, ExtractSourcesAbstractOperation {
+public class ExtractSourcesOperation<T: Target>: BasicOperation, ExtractSourcesAbstractOperation, @unchecked Sendable {
   public let target: T
   let sourceRoot: Path
   let supportPath: Path?
@@ -74,7 +74,7 @@ public class ExtractSourcesOperation<T: Target>: BasicOperation, ExtractSourcesA
             .subtracting(result.targetPaths)
       }
     }
-    log("Found \(result.targetPaths.count) source file\(result.targetPaths.count != 1 ? "s" : "") and \(result.dependencyPaths.count) dependency source file\(result.dependencyPaths.count != 1 ? "s" : "") for target \(target.name.singleQuoted)")
+    log("Found \(self.result.targetPaths.count) source file\(self.result.targetPaths.count != 1 ? "s" : "") and \(self.result.dependencyPaths.count) dependency source file\(self.result.dependencyPaths.count != 1 ? "s" : "") for target \(self.target.name.singleQuoted)")
   }
   
   /// Returns the compiled source file paths for a single given target.
@@ -156,7 +156,7 @@ public class ExtractSourcesOperation<T: Target>: BasicOperation, ExtractSourcesA
 }
 
 /// Finds whether a given source path is ignored by a `.mockingbird-ignore` file.
-private class GlobSearchOperation: BasicOperation {
+private class GlobSearchOperation: BasicOperation, @unchecked Sendable {
   class Result {
     fileprivate(set) var sourcePath: SourcePath?
   }
@@ -179,11 +179,11 @@ private class GlobSearchOperation: BasicOperation {
   override var description: String { "Glob Search" }
   
   override func run() throws {
-    guard shouldInclude(sourcePath: sourcePath.path.absolute(), in: sourcePath.path.parent()).value else {
-      log("Ignoring source path at \(sourcePath.path.absolute())")
+    guard shouldInclude(sourcePath: self.sourcePath.path.absolute(), in: self.sourcePath.path.parent()).value else {
+      log("Ignoring source path at \(self.sourcePath.path.absolute())")
       return
     }
-    result.sourcePath = sourcePath
+    result.sourcePath = self.sourcePath
   }
   
   struct Glob {

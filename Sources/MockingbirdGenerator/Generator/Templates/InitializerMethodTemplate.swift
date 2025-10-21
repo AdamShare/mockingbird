@@ -1,7 +1,7 @@
 import Foundation
 
 /// Renders initializer method declarations.
-class InitializerMethodTemplate: MethodTemplate {
+class InitializerMethodTemplate: MethodTemplate, @unchecked Sendable {
   /// Synthetic initializer for static/class instances.
   override var classInitializerProxy: String? {
     guard method.isInitializer,
