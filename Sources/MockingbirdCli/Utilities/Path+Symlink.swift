@@ -1,5 +1,5 @@
 import Foundation
-import PathKit
+@preconcurrency import PathKit
 
 extension Path {
   func followRecursively() throws -> Path {

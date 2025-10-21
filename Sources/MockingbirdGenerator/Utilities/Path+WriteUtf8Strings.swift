@@ -1,5 +1,5 @@
 import Foundation
-import PathKit
+@preconcurrency import PathKit
 
 enum WriteUtf8StringFailure: Error, LocalizedError {
   case streamCreationFailure(path: Path)
@@ -15,16 +15,16 @@ enum WriteUtf8StringFailure: Error, LocalizedError {
   }
 }
 
-private class FileManagerMoveDelegate: NSObject, FileManagerDelegate {
+private class FileManagerMoveDelegate: NSObject, FileManagerDelegate, @unchecked Sendable {
   func fileManager(_ fileManager: FileManager, shouldMoveItemAt srcURL: URL, to dstURL: URL)
     -> Bool { return true }
-  
+
   func fileManager(_ fileManager: FileManager,
                    shouldProceedAfterError error: Error,
                    movingItemAt srcURL: URL,
                    to dstURL: URL)
     -> Bool { return true }
-  
+
   static let shared = FileManagerMoveDelegate()
 }
 

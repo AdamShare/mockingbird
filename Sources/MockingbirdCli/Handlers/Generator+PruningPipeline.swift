@@ -1,6 +1,6 @@
 import Foundation
 import MockingbirdGenerator
-import PathKit
+@preconcurrency import PathKit
 import XcodeProj
 
 extension Generator {

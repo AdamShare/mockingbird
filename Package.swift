@@ -1,4 +1,4 @@
-// swift-tools-version:5.7
+// swift-tools-version:6.2
 import PackageDescription
 import class Foundation.ProcessInfo
 
@@ -12,9 +12,9 @@ if ProcessInfo.processInfo.environment["MKB_BUILD_EXECUTABLES"] != "1" {
     name: "Mockingbird",
     platforms: [
       .macOS(.v10_13),
-      .iOS(.v11),
-      .tvOS(.v11),
-      .watchOS("7.4"),
+      .iOS(.v12),
+      .tvOS(.v12),
+      .watchOS(.v5),
     ],
     products: [
       .library(name: "Mockingbird", targets: ["Mockingbird", "MockingbirdObjC"]),
@@ -42,24 +42,22 @@ if ProcessInfo.processInfo.environment["MKB_BUILD_EXECUTABLES"] != "1" {
   )
 } else {
   // MARK: Executables
-  package = Package(
+ package = Package(
     name: "Mockingbird",
     platforms: [
-      .macOS(.v10_15),
+      .macOS(.v12),
     ],
     products: [
       .executable(name: "mockingbird", targets: ["MockingbirdCli"]),
-      .executable(name: "automation", targets: ["MockingbirdAutomationCli"]),
     ],
     // These dependencies must be kept in sync with the Xcode project.
     // TODO: Add a build rule to enforce consistency.
     dependencies: [
-      .package(url: "https://github.com/apple/swift-argument-parser.git", exact: "1.0.2"),
-      .package(url: "https://github.com/kylef/PathKit.git", exact: "1.0.1"),
-      .package(url: "https://github.com/apple/swift-syntax.git", exact: "508.0.1"),
-      .package(url: "https://github.com/jpsim/SourceKitten.git", exact: "0.30.0"),
-      .package(url: "https://github.com/tuist/XcodeProj.git", exact: "8.7.1"),
-      .package(url: "https://github.com/weichsel/ZIPFoundation.git", exact: "0.9.14"),
+      .package(url: "https://github.com/apple/swift-argument-parser.git", exact: "1.6.1"),
+      .package(url: "https://github.com/apple/swift-syntax.git", exact: "602.0.0"),
+      .package(url: "https://github.com/jpsim/SourceKitten.git", exact: "0.37.2"),
+      .package(url: "https://github.com/tuist/XcodeProj.git", exact: "9.6.0"),
+      .package(url: "https://github.com/weichsel/ZIPFoundation.git", exact: "0.9.20"),
     ],
     targets: [
       .target(name: "MockingbirdCommon"),
@@ -79,29 +77,12 @@ if ProcessInfo.processInfo.environment["MKB_BUILD_EXECUTABLES"] != "1" {
       .target(
         name: "MockingbirdGenerator",
         dependencies: [
-          .product(name: "SourceKittenFramework", package: "swift-syntax"),
+          .product(name: "SourceKittenFramework", package: "SourceKitten"),
           "MockingbirdCommon",
           .product(name: "SwiftSyntax", package: "swift-syntax"),
           .product(name: "SwiftParser", package: "swift-syntax"),
           "XcodeProj",
         ]),
-      .target(
-        name: "MockingbirdAutomationCli",
-        dependencies: [
-          .product(name: "ArgumentParser", package: "swift-argument-parser"),
-          "MockingbirdAutomation",
-          "MockingbirdCommon",
-          "PathKit",
-        ]),
-      .target(
-        name: "MockingbirdAutomation",
-        dependencies: [
-          "MockingbirdCommon",
-          "PathKit",
-        ]),
-      .testTarget(
-        name: "MockingbirdAutomationTests",
-        dependencies: ["MockingbirdAutomation"]),
     ]
   )
 }

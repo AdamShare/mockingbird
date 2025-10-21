@@ -1,6 +1,6 @@
 import Foundation
 import MockingbirdCommon
-import PathKit
+@preconcurrency import PathKit
 import XcodeProj
 
 public struct SourceFile: Codable, Hashable {

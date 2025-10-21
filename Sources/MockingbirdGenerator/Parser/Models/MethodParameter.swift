@@ -1,7 +1,7 @@
 import Foundation
-import SourceKittenFramework
+@preconcurrency import SourceKittenFramework
 
-struct MethodParameter {
+struct MethodParameter: Sendable {
   let name: String
   let argumentLabel: String?
   let typeName: String

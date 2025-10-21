@@ -1,7 +1,7 @@
 import Foundation
 
 /// Checks whether a number matches some expected count.
-public struct CountMatcher {
+public struct CountMatcher: @unchecked Sendable {
   let matcher: (Int) -> Bool
 
   /// Creates a printable description of the expected call count.

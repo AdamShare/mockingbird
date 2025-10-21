@@ -2,7 +2,7 @@ import Foundation
 import SourceKittenFramework
 import os.log
 
-public class ProcessTypesOperation: BasicOperation {
+public class ProcessTypesOperation: BasicOperation, @unchecked Sendable {
   let parseFilesResult: ParseFilesOperation.Result
   let checkCacheResult: CheckCacheOperation.Result?
   let useRelaxedLinking: Bool
@@ -69,7 +69,7 @@ public class ProcessTypesOperation: BasicOperation {
         .compactMap({ $0.result.mockableType })
         .filter({ !$0.isContainedType })
       result.parsedFiles = parseFilesResult.parsedFiles
-      log("Created \(result.mockableTypes.count) mockable type\(result.mockableTypes.count != 1 ? "s" : "")")
+      log("Created \(self.result.mockableTypes.count) mockable type\(self.result.mockableTypes.count != 1 ? "s" : "")")
     }
   }
 }

@@ -1,6 +1,6 @@
 import Foundation
 import MockingbirdGenerator
-import PathKit
+@preconcurrency import PathKit
 
 /// Encodes key-value options, normalizing values based on the configuration.
 struct OptionArgumentEncoding: Encoder {

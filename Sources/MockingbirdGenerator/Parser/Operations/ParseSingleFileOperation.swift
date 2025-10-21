@@ -1,11 +1,11 @@
 import Foundation
 import MockingbirdCommon
-import PathKit
+@preconcurrency import PathKit
 import SourceKittenFramework
 import SwiftSyntax
 import SwiftParser
 
-class ParseSingleFileOperation: BasicOperation {
+class ParseSingleFileOperation: BasicOperation, @unchecked Sendable {
   class Result {
     fileprivate(set) var parsedFile: ParsedFile?
   }
@@ -28,7 +28,7 @@ class ParseSingleFileOperation: BasicOperation {
     self.swiftSyntaxResult = swiftSyntaxResult
   }
   
-  private static var memoizedParsedFiles = Synchronized<[SourcePath: ParsedFile]>([:])
+  nonisolated(unsafe) private static var memoizedParsedFiles = Synchronized<[SourcePath: ParsedFile]>([:])
   
   override func run() throws {
     let sourcePath = self.sourcePath
@@ -61,7 +61,7 @@ class ParseSingleFileOperation: BasicOperation {
   }
 }
 
-class ParseSourceKitOperation: BasicOperation {
+class ParseSourceKitOperation: BasicOperation, @unchecked Sendable {
   class Result {
     fileprivate(set) var structure: Structure?
     fileprivate(set) var file: File?
@@ -82,7 +82,7 @@ class ParseSourceKitOperation: BasicOperation {
   }
 }
 
-class ParseSwiftSyntaxOperation: BasicOperation {
+class ParseSwiftSyntaxOperation: BasicOperation, @unchecked Sendable {
   class Result {
     fileprivate(set) var importDeclarations = Set<ImportDeclaration>()
     fileprivate(set) var compilationDirectives = [CompilationDirective]()
@@ -101,7 +101,7 @@ class ParseSwiftSyntaxOperation: BasicOperation {
     let file = try sourcePath.path.getFile()
     let sourceFile = Parser.parse(source: file.contents)
     let parser = SourceFileAuxiliaryParser(with: {
-      SourceLocationConverter(file: "\(self.sourcePath.path)", tree: sourceFile)
+      SourceLocationConverter(fileName: "\(self.sourcePath.path)", tree: sourceFile)
     }).parse(sourceFile)
     retainForever(parser)
     

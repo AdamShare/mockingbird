@@ -1,6 +1,6 @@
 import Foundation
 import MockingbirdGenerator
-import PathKit
+@preconcurrency import PathKit
 
 protocol EncodableArguments: Encodable {
   func encodeOptions(to encoder: Encoder) throws

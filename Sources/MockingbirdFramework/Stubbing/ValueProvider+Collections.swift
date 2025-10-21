@@ -15,7 +15,7 @@ extension Dictionary: Providable {
 }
 
 #if canImport(ObjectiveC)
-private let collectionsProviderNSValues = [
+nonisolated(unsafe) private let collectionsProviderNSValues = [
   ObjectIdentifier(NSCountedSet.self): NSCountedSet(),
   ObjectIdentifier(NSOrderedSet.self): NSOrderedSet(),
   ObjectIdentifier(NSMutableOrderedSet.self): NSMutableOrderedSet(),
@@ -29,7 +29,7 @@ public extension ValueProvider {
   /// A value provider with default-initialized collections.
   ///
   /// https://developer.apple.com/documentation/foundation/collections
-  static let collectionsProvider = ValueProvider(
+    nonisolated(unsafe) static let collectionsProvider = ValueProvider(
     values: collectionsProviderNSValues,
     identifiers: [
       Array<Any>.providableIdentifier,

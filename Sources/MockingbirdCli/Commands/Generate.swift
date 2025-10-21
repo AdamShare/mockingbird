@@ -1,11 +1,11 @@
 import ArgumentParser
 import Foundation
 import MockingbirdGenerator
-import PathKit
+@preconcurrency import PathKit
 
 extension Mockingbird {
-  struct Generate: ParsableCommand {
-    static var configuration = CommandConfiguration(
+  struct Generate: ParsableCommand, Sendable {
+      static let configuration = CommandConfiguration(
       abstract: "Generate mocks for a set of targets in a project."
     )
     

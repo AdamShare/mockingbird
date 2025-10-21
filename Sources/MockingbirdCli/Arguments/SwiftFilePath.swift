@@ -1,12 +1,12 @@
 import ArgumentParser
 import Foundation
-import PathKit
+@preconcurrency import PathKit
 import MockingbirdGenerator
 
-struct SwiftFilePath: ExpressibleByArgument {
+struct SwiftFilePath: ExpressibleByArgument, Sendable {
   var path: Path
   var defaultValueDescription: String { path.abbreviate().string }
-  static var defaultCompletionKind: CompletionKind = .file(extensions: ["swift"])
+    nonisolated(unsafe) static var defaultCompletionKind: CompletionKind = .file(extensions: ["swift"])
   
   init?(argument: String) {
     self.path = Path(argument)

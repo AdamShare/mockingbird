@@ -1,9 +1,9 @@
 import Foundation
-import PathKit
-import SourceKittenFramework
+@preconcurrency import PathKit
+@preconcurrency import SourceKittenFramework
 import SwiftSyntax
 
-struct ParsedFile {
+struct ParsedFile: Sendable {
   let file: File
   let data: Data?
   let path: Path
@@ -48,7 +48,7 @@ struct ParsedFile {
   }
 }
 
-struct CompilationDirective: Comparable, Hashable {
+struct CompilationDirective: Comparable, Hashable, Sendable {
   let range: Range<Int64> // Byte offset bounds of the compilation directive declaration.
   let declaration: String
   let condition: String?
@@ -76,11 +76,11 @@ struct CompilationDirective: Comparable, Hashable {
   init?(from clause: IfConfigClauseSyntax,
         priorDirectives: [CompilationDirective],
         converter: SourceLocationConverter) {
-    guard PoundKeyword(rawValue: clause.poundKeyword.withoutTrivia().text)?.isLogical == true
+    guard PoundKeyword(rawValue: clause.poundKeyword.trimmed.text)?.isLogical == true
       else { return nil }
     
     self.condition = clause.condition?
-      .withoutTrivia()
+      .trimmed
       .description
       .trimmingCharacters(in: .whitespacesAndNewlines)
     
@@ -109,7 +109,7 @@ struct CompilationDirective: Comparable, Hashable {
   }
 }
 
-struct ImportDeclaration: Hashable {
+struct ImportDeclaration: Hashable, Sendable {
   let moduleName: String
   let fullPath: String
   let fullDeclaration: String

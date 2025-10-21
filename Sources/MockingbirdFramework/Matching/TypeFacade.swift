@@ -6,16 +6,16 @@ import Foundation
 /// guarantees and autocompletion compared to conforming all parameter types to a common protocol.
 ///
 /// It goes without saying that this should probably never be done in production.
-private class ResolutionContext {
+private final class ResolutionContext: Sendable {
   enum Constants {
     static let contextKey = DispatchSpecificKey<ResolutionContext>()
-    static let resultSentinel = NSException(
+      nonisolated(unsafe) static let resultSentinel = NSException(
       name: NSExceptionName(rawValue: "co.bird.mockingbird.ResolutionContext.result"),
       reason: nil,
       userInfo: nil)
   }
   
-  class Result {
+    class Result: @unchecked Sendable {
     var value: Any? {
       didSet {
         MKBThrowException(Constants.resultSentinel)

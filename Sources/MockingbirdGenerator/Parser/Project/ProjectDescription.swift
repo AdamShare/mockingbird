@@ -1,5 +1,5 @@
 import Foundation
-import PathKit
+@preconcurrency import PathKit
 
 public struct ProjectDescription: Codable, Hashable {
   public let targets: [TargetDescription]

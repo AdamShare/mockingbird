@@ -3,7 +3,7 @@
 import Foundation
 
 /// Subscripts are a special case and require synthesizing getters and setters for matching.
-class SubscriptMethodTemplate: MethodTemplate {
+class SubscriptMethodTemplate: MethodTemplate, @unchecked Sendable {
   override var mockedDeclarations: String {
     let getterInvocation = ObjectInitializationTemplate(
       name: "Mockingbird.SwiftInvocation",

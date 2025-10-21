@@ -27,7 +27,7 @@ import Foundation
 
 extension StubbingContext {
   /// Used to indicate that no implementation exists for a given invocation.
-  @objc public static let noImplementation = NSObject()
+  @objc nonisolated(unsafe) public static let noImplementation = NSObject()
   
   /// Apply arguments to a Swift implementation forwarded by the Objective-C runtime.
   ///

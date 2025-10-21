@@ -7,7 +7,7 @@ import SourceKittenFramework
 /// memoizes a `MockableType` object. Once the process reaches the bottom original type, all
 /// inherited dependency types exist and can be merged. See the `MockableType` initializer for the
 /// merging strategy.
-class FlattenInheritanceOperation: BasicOperation {
+class FlattenInheritanceOperation: BasicOperation, @unchecked Sendable {
   let rawType: [RawType]
   let moduleDependencies: [String: Set<String>]
   let rawTypeRepository: RawTypeRepository
@@ -62,7 +62,7 @@ class FlattenInheritanceOperation: BasicOperation {
   
   /// Recursively traverse the inheritance graph from bottom up (children to parents). Note that
   /// `rawType` is actually an unmerged set of all `RawType` declarations found eg in extensions.
-  private static var memoizedMockbleTypes = Synchronized<[String: MockableType]>([:])
+  nonisolated(unsafe) private static var memoizedMockbleTypes = Synchronized<[String: MockableType]>([:])
 
   private func flattenInheritance(for rawType: [RawType]) -> MockableType? {
     // All module names that were explicitly referenced from an import declaration.

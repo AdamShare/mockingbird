@@ -1,8 +1,8 @@
 import Foundation
 import MockingbirdCommon
-import PathKit
+@preconcurrency import PathKit
 
-public enum LogType: Int, CustomStringConvertible {
+public enum LogType: Int, CustomStringConvertible, Sendable {
   case debug = 0, info, warn, error
   
   public var formattedDescription: String {
@@ -46,7 +46,7 @@ public enum LogLevel: String, RawRepresentable, CaseIterable {
   public static let `default` = Synchronized<LogLevel>(.normal)
 }
 
-public enum DiagnosticType: String, Hashable, Codable, CaseIterable {
+public enum DiagnosticType: String, Hashable, Codable, CaseIterable, Sendable {
   case all = "all"
   case notMockable = "not-mockable"
   case undefinedType = "undefined-type"
@@ -55,7 +55,7 @@ public enum DiagnosticType: String, Hashable, Codable, CaseIterable {
   public static let enabled = Synchronized<Set<DiagnosticType>>([])
 }
 
-public enum PruningMethod: String, Codable, CaseIterable {
+public enum PruningMethod: String, Codable, CaseIterable, Sendable {
   case disable = "disable"
   case stub = "stub"
   case omit = "omit"
@@ -72,7 +72,7 @@ public func log(_ message: @escaping @autoclosure () -> String,
                 diagnostic: DiagnosticType? = nil,
                 output: UnsafeMutablePointer<FILE>? = nil,
                 filePath: Path? = nil,
-                line: @escaping @autoclosure () -> Int? = nil) {
+                line: @escaping @autoclosure @Sendable () -> Int? = nil) {
   loggingQueue.async {
     guard LogLevel.default.value.shouldLog(type) else { return }
     if let diagnostic = diagnostic,
@@ -101,17 +101,17 @@ public func log(_ message: @escaping @autoclosure () -> String,
 }
 
 /// Log an informational message.
-public func logInfo(_ message: @escaping @autoclosure () -> String,
+public func logInfo(_ message: @escaping @autoclosure @Sendable () -> String,
                     output: UnsafeMutablePointer<FILE>? = nil) {
   log(message(), type: .info, output: output)
 }
 
 /// Log a warning message.
-public func logWarning(_ message: @escaping @autoclosure () -> String,
+public func logWarning(_ message: @escaping @autoclosure @Sendable () -> String,
                        diagnostic: DiagnosticType? = nil,
                        output: UnsafeMutablePointer<FILE>? = nil,
                        filePath: Path? = nil,
-                       line: @escaping @autoclosure () -> Int? = nil) {
+                       line: @escaping @autoclosure @Sendable () -> Int? = nil) {
   log(message(),
       type: .warn,
       diagnostic: diagnostic,
@@ -125,7 +125,7 @@ public func logError(_ message: String,
                      diagnostic: DiagnosticType? = nil,
                      output: UnsafeMutablePointer<FILE>? = nil,
                      filePath: Path? = nil,
-                     line: @escaping @autoclosure () -> Int? = nil) {
+                     line: @escaping @autoclosure @Sendable () -> Int? = nil) {
   log(message,
       type: .error,
       diagnostic: diagnostic,
@@ -139,7 +139,7 @@ public func logError(_ error: Error,
                      diagnostic: DiagnosticType? = nil,
                      output: UnsafeMutablePointer<FILE>? = nil,
                      filePath: Path? = nil,
-                     line: @escaping @autoclosure () -> Int? = nil) {
+                     line: @escaping @autoclosure @Sendable () -> Int? = nil) {
   let localizedDescription: String = {
     guard let localizedError = error as? LocalizedError else { return "\(error)" }
     return localizedError.localizedDescription

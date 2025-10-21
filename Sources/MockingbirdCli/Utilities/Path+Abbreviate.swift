@@ -1,5 +1,5 @@
 import Foundation
-import PathKit
+@preconcurrency import PathKit
 import MockingbirdGenerator
 
 extension Path {

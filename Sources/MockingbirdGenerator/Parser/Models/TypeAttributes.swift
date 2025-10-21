@@ -1,5 +1,5 @@
 import Foundation
-import SourceKittenFramework
+@preconcurrency import SourceKittenFramework
 
 typealias StructureDictionary = [String: SourceKitRepresentable]
 

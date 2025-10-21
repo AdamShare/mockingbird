@@ -2,7 +2,7 @@ import Foundation
 import XCTest
 
 /// A type that can handle test failures emitted by Mockingbird.
-public protocol TestFailer {
+public protocol TestFailer: Sendable {
   /// Fail the current test case.
   ///
   /// - Parameters:
@@ -20,7 +20,9 @@ public func swizzleTestFailer(_ newTestFailer: TestFailer) {
   if Thread.isMainThread {
     testFailer = newTestFailer
   } else {
-    DispatchQueue.main.sync { testFailer = newTestFailer }
+      DispatchQueue.main.sync {
+          testFailer = newTestFailer
+      }
   }
 }
 
@@ -40,7 +42,7 @@ func FailTest(_ message: String, isFatal: Bool = false,
 
 // MARK: - Internal
 
-private class StandardTestFailer: TestFailer {
+private class StandardTestFailer: TestFailer, @unchecked Sendable {
   func fail(message: String, isFatal: Bool, file: StaticString, line: UInt) {
     guard isFatal else {
       return XCTFail(message, file: file, line: line)
@@ -54,4 +56,4 @@ private class StandardTestFailer: TestFailer {
   }
 }
 
-private var testFailer: TestFailer = StandardTestFailer()
+nonisolated(unsafe) private var testFailer: TestFailer = StandardTestFailer()

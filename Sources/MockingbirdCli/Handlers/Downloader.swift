@@ -2,7 +2,7 @@ import ArgumentParser
 import Foundation
 import MockingbirdCommon
 import MockingbirdGenerator
-import PathKit
+@preconcurrency import PathKit
 import ZIPFoundation
 
 enum AssetBundleType: String, ExpressibleByArgument, CustomStringConvertible {

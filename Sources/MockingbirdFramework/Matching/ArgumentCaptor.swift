@@ -13,7 +13,7 @@ import Foundation
 /// verify(bird.name = any()).wasCalled()
 /// print(nameCaptor.value)  // Prints "Ryan"
 /// ```
-public class ArgumentCaptor<ParameterType>: ArgumentMatcher {
+public class ArgumentCaptor<ParameterType>: ArgumentMatcher, @unchecked Sendable {
   final class WeakBox<A: AnyObject> {
     weak var value: A?
     init(_ value: A) {
@@ -24,17 +24,6 @@ public class ArgumentCaptor<ParameterType>: ArgumentMatcher {
   /// Creates an argument matcher that can be passed to a mockable declaration.
   @available(*, deprecated, renamed: "any()")
   public var matcher: ParameterType {
-    return createTypeFacade(self)
-  }
-  
-  /// Creates an argument matcher that can be passed to a mockable declaration.
-  // The generic constraint shadows the class constraint so the ObjC overload is picked up.
-  public func any<ParameterType>() -> ParameterType {
-    return createTypeFacade(self)
-  }
-  
-  /// Creates an argument matcher that can be passed to a mockable declaration.
-  public func any<ParameterType: NSObjectProtocol>() -> ParameterType {
     return createTypeFacade(self)
   }
 
@@ -71,4 +60,19 @@ public class ArgumentCaptor<ParameterType>: ArgumentMatcher {
     }
     return super.compare(with: rhs)
   }
+}
+
+extension ArgumentCaptor where ParameterType: NSObjectProtocol {
+    /// Creates an argument matcher that can be passed to a mockable declaration.
+    public func any() -> ParameterType {
+      return createTypeFacade(self)
+    }
+}
+
+extension ArgumentCaptor {
+    /// Creates an argument matcher that can be passed to a mockable declaration.
+    // The generic constraint shadows the class constraint so the ObjC overload is picked up.
+    public func any() -> ParameterType {
+      return createTypeFacade(self)
+    }
 }

@@ -1,14 +1,14 @@
 import ArgumentParser
 import Foundation
-import PathKit
+@preconcurrency import PathKit
 import MockingbirdGenerator
 
-class DirectoryPath: ExpressibleByArgument {
+struct DirectoryPath: ExpressibleByArgument, Sendable {
   var path: Path
   var defaultValueDescription: String { path.abbreviate().string }
-  static var defaultCompletionKind: CompletionKind = .directory
+    static let defaultCompletionKind: CompletionKind = .directory
   
-  required init?(argument: String) {
+  init(argument: String) {
     self.path = Path(argument)
   }
   

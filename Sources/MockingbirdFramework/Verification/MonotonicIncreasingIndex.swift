@@ -1,6 +1,6 @@
 import Foundation
 
-private let index = Synchronized<UInt>(0)
+nonisolated(unsafe) private let index = Synchronized<UInt>(0)
 
 enum MonotonicIncreasingIndex {
   static func peekIndex() -> UInt {

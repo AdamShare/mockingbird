@@ -1,6 +1,6 @@
 import Foundation
 import MockingbirdGenerator
-import PathKit
+@preconcurrency import PathKit
 
 struct OptionGroupArgumentEncoding: Encoder {
   final class EncodedArguments {

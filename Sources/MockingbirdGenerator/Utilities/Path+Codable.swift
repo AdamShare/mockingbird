@@ -1,7 +1,7 @@
 import Foundation
-import PathKit
+@preconcurrency import PathKit
 
-extension Path: Codable {
+extension Path: @retroactive Codable {
   public init(from decoder: Decoder) throws {
     let path = try decoder.singleValueContainer().decode(String.self)
     self.init(path)

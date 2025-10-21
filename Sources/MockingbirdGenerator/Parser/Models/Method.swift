@@ -1,7 +1,7 @@
 import Foundation
-import SourceKittenFramework
+@preconcurrency import SourceKittenFramework
 
-struct Method {
+struct Method: Sendable {
   let name: String
   let shortName: String
   let returnType: DeclaredType
@@ -278,7 +278,7 @@ struct Method {
 extension Method: Hashable {
   /// A hashable version of Method that's unique according to Swift generics when subclassing.
   /// https://forums.swift.org/t/cannot-override-more-than-one-superclass-declaration/22213
-  struct Reduced: Hashable {
+  struct Reduced: Hashable, Sendable {
     let name: String
     let returnTypeName: String
     let parameters: [MethodParameter]
