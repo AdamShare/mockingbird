@@ -22,8 +22,9 @@ class SourceFileAuxiliaryParser: SyntaxVisitor {
   /// Handle import declarations, e.g. `import Mockingbird`
   override func visit(_ node: ImportDeclSyntax) -> SyntaxVisitorContinueKind {
     guard let moduleName = node.path.first?.name.text else { return .skipChildren }
-    let fullPath = node.path.trimmed.description
-    let fullDeclaration = node.trimmed.description
+    // Use trimmedDescription to remove all leading/trailing trivia (whitespace, comments, etc.)
+    let fullPath = node.path.trimmedDescription
+    let fullDeclaration = node.trimmedDescription
     let sourceRange = node.sourceRange(converter: converter,
                                        afterLeadingTrivia: true,
                                        afterTrailingTrivia: true)

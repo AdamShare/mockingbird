@@ -76,9 +76,11 @@ class FileGenerator {
         })
       })
     
-    let allImports = Set(implicitImports + explicitImports).sorted()
+    let allImports = Set(implicitImports + explicitImports)
+      .filter({ !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty })
+      .sorted()
     headerSections.append(String(lines: allImports))
-    
+
     return PartialFileContent(contents: String(lines: headerSections, spacing: 2))
   }
   
